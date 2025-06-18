@@ -23,6 +23,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Create changelog directory
+        run: |
+          mkdir -p changelog-dir
+          echo "Created changelog directory at $(pwd)/changelog-dir"
+
       - name: Download binary from release
         run: |
           mkdir -p bin
@@ -34,6 +39,7 @@ jobs:
         uses: speakeasy-api/sdk-generation-action@changelog-additions-removals
         env:
           SPEAKEASY_CLI_LOCATION: ${{ github.workspace }}/bin/speakeasy
+          SPEAKEASY_CHANGELOG_DIR: ${{ github.workspace }}/changelog-dir
         with:
           speakeasy_version: latest
           github_access_token: ${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}

@@ -95,3 +95,12 @@ examples:
           application/json: {"code": 589113, "message": "<value>"}
 examplesVersion: 1.0.0
 generatedTests: {}
+operations:
+  typescript:
+    addPet:
+      method: POST
+      path: /pet
+      representations:
+        pet.addPet: {}
+        pet.addPetForm: {}
+        pet.addPetRaw: {}
