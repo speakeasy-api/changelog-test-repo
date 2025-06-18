@@ -31,7 +31,7 @@ jobs:
       - name: Download binary from release
         run: |
           mkdir -p bin
-          curl -L -o bin/speakeasy https://github.com/speakeasy-api/changelog-test-repo/releases/download/v0.0.1/speakeasy
+          curl -L -o bin/speakeasy https://github.com/speakeasy-api/changelog-test-repo/releases/download/v0.0.2/speakeasy
           chmod +x bin/speakeasy
 
       - name: Generate SDK
