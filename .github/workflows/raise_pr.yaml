@@ -48,3 +48,9 @@ jobs:
           force: ${{ inputs.force }}
           target: overlay-example
           set_version: ${{ inputs.set_version }}
+
+      - name: Debug Action Info
+        run: |
+          echo "Action Repository: ${{ github.action_repository }}"
+          echo "Action Ref: ${{ github.action_ref }}"
+          echo "Using sdk-generation-action from: speakeasy-api/sdk-generation-action@changelog-additions-removals"
