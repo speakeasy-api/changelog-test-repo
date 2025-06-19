@@ -57,15 +57,25 @@ jobs:
           echo "SPEAKEASY_CLI_LOCATION: $(env.SPEAKEASY_CLI_LOCATION)"
           echo "SPEAKEASY_CHANGELOG_DIR: $(env.SPEAKEASY_CHANGELOG_DIR)"
 
-      - name: Generate SDK
-        id: generate
-        uses: speakeasy-api/sdk-generation-action@changelog-additions-removals
-        env:
-          SPEAKEASY_CLI_LOCATION: ${{ github.workspace }}/bin/speakeasy
-          SPEAKEASY_CHANGELOG_DIR: ${{ github.workspace }}/changelog-dir
-        with:
-          github_access_token: ${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}
-          speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
-          mode: pr
-          force: true
-          target: overlay-example
+      - name: Build and run custom SDK action
+        run: |
+          # Clone the repository with your changes
+          git clone https://github.com/speakeasy-api/sdk-generation-action.git /tmp/sdk-action
+          cd /tmp/sdk-action
+          git checkout changelog-additions-removals
+          
+          # Build the Docker image
+          docker build -t custom-sdk-action .
+          
+          # Run the container with your environment variables
+          docker run --rm \
+            -e SPEAKEASY_CLI_LOCATION="${{ github.workspace }}/bin/speakeasy" \
+            -e SPEAKEASY_CHANGELOG_DIR="${{ github.workspace }}/changelog-dir" \
+            -e GITHUB_ACCESS_TOKEN="${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}" \
+            -e SPEAKEASY_API_KEY="${{ secrets.SPEAKEASY_API_KEY }}" \
+            -e MODE=pr \
+            -e FORCE=true \
+            -e TARGET=overlay-example \
+            -v "${{ github.workspace }}:${{ github.workspace }}" \
+            -w "${{ github.workspace }}" \
+            custom-sdk-action
