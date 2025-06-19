@@ -49,6 +49,28 @@ jobs:
           echo "SPEAKEASY_CLI_LOCATION=${{ github.workspace }}/bin/speakeasy" >> $GITHUB_ENV
           echo "SPEAKEASY_CHANGELOG_DIR=${{ github.workspace }}/changelog-dir" >> $GITHUB_ENV
 
+      - name: Debug Binary Architecture
+        run: |
+          echo "=== Binary Architecture Debug ==="
+          echo "System architecture: $(uname -m)"
+          echo "System OS: $(uname -s)"
+          echo "Binary file info:"
+          file bin/speakeasy
+          echo "Binary permissions:"
+          ls -la bin/speakeasy
+          echo "Trying to run binary:"
+          bin/speakeasy --version || echo "Binary execution failed"
+          echo "=== End Binary Debug ==="
+
+      - name: Test Binary Execution
+        run: |
+          echo "Testing if binary can execute..."
+          if bin/speakeasy --version; then
+            echo "✅ Binary executes successfully"
+          else
+            echo "❌ Binary execution failed"
+            exit 1
+          fi
 
       - name: Debug Environment Variables
         run: |
