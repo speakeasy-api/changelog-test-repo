@@ -1,4 +1,4 @@
-name: Generate SDK
+name: Generate SDK for PR
 permissions:
   checks: write
   contents: write
@@ -12,9 +12,7 @@ on:
         description: Force generation of SDKs
         type: boolean
         default: true
-      set_version:
-        description: optionally set a specific SDK version
-        type: string
+
 
 jobs:
   generate:
@@ -26,13 +24,32 @@ jobs:
       - name: Create changelog directory
         run: |
           mkdir -p changelog-dir
+          echo "current working directory - $(pwd)"
           echo "Created changelog directory at $(pwd)/changelog-dir"
 
       - name: Download binary from release
         run: |
+          echo "current working directory before mkdir  - $(pwd)"
           mkdir -p bin
+          echo "current working directory - $(pwd)"
+          echo "Downloading speakeasy binary to: $(pwd)/bin/speakeasy"
           curl -L -o bin/speakeasy https://github.com/speakeasy-api/changelog-test-repo/releases/download/v0.0.3/speakeasy
           chmod +x bin/speakeasy
+          echo "current working directory - $(pwd)"
+          echo "current working directory - $(pwd)/bin/speakeasy"
+          echo "current working directory - $(pwd)bin/speakeasy"
+          echo "Full binary path: $(realpath bin/speakeasy)"
+          echo "Files in bin directory ->"
+          ls -la bin/
+          echo "=== End of bin directory contents ==="
+          echo "SPEAKEASY_CLI_LOCATION=${{ github.workspace }}/bin/speakeasy" >> $GITHUB_ENV
+          echo "SPEAKEASY_CHANGELOG_DIR=${{ github.workspace }}/changelog-dir" >> $GITHUB_ENV
+
+
+      - name: Debug Environment Variables
+        run: |
+          echo "SPEAKEASY_CLI_LOCATION: $(SPEAKEASY_CLI_LOCATION)"
+          echo "SPEAKEASY_CHANGELOG_DIR: $(SPEAKEASY_CHANGELOG_DIR)"
 
       - name: Generate SDK
         id: generate
@@ -41,16 +58,8 @@ jobs:
           SPEAKEASY_CLI_LOCATION: ${{ github.workspace }}/bin/speakeasy
           SPEAKEASY_CHANGELOG_DIR: ${{ github.workspace }}/changelog-dir
         with:
-          speakeasy_version: latest
           github_access_token: ${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}
           speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
           mode: pr
-          force: ${{ inputs.force }}
+          force: true
           target: overlay-example
-          set_version: ${{ inputs.set_version }}
-
-      - name: Debug Action Info
-        run: |
-          echo "Action Repository: ${{ github.action_repository }}"
-          echo "Action Ref: ${{ github.action_ref }}"
-          echo "Using sdk-generation-action from: speakeasy-api/sdk-generation-action@changelog-additions-removals"
