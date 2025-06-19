@@ -1,18 +1,21 @@
-speakeasyVersion: 1.488.0
+speakeasyVersion: 1.567.1
 sources:
     openapi:
         sourceNamespace: openapi
-        sourceRevisionDigest: sha256:f13cd34a75f36cfb40d6cc762537046dfc97bfc2becdd93c57de8ce4fe43a34a
-        sourceBlobDigest: sha256:67faccc65f784b651000acb2e6a666ee5d46abe0405b57bbf47e05e4265af9ba
+        sourceRevisionDigest: sha256:cc44fd6199f8d3e526711cadd8329431a41c945a84e8a74b032abd2551fb3784
+        sourceBlobDigest: sha256:5b6536bcb03d25863717efc0ddd9a4dbac556a154104d2ea5c6e0df3994c054a
         tags:
             - latest
+            - speakeasy-sdk-regen-1750332272
             - 1.0.0
 targets:
     overlay-example:
         source: openapi
         sourceNamespace: openapi
-        sourceRevisionDigest: sha256:f13cd34a75f36cfb40d6cc762537046dfc97bfc2becdd93c57de8ce4fe43a34a
-        sourceBlobDigest: sha256:67faccc65f784b651000acb2e6a666ee5d46abe0405b57bbf47e05e4265af9ba
+        sourceRevisionDigest: sha256:cc44fd6199f8d3e526711cadd8329431a41c945a84e8a74b032abd2551fb3784
+        sourceBlobDigest: sha256:5b6536bcb03d25863717efc0ddd9a4dbac556a154104d2ea5c6e0df3994c054a
+        codeSamplesNamespace: openapi-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:602323d550b66fbe9b1e88eb712ae9025dc879c43bd7fa8c0cc5d2a4239bfed1
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -24,8 +27,14 @@ workflow:
                 - location: overlay.yaml
             output: combined-spec.yaml
             registry:
-                location: registry.speakeasyapi.dev/ash-testing/ash-testing/openapi
+                location: registry.speakeasyapi.dev/speakeasy-self/speakeasy-self/openapi
     targets:
         overlay-example:
             target: typescript
             source: openapi
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/speakeasy-self/speakeasy-self/openapi-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false

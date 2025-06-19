@@ -6,19 +6,14 @@
 ### `components.Pet[]`
 
 ```typescript
-const value: components.Pet[] = [
-  {
-    id: 548814,
-    name: "<value>",
-  },
-];
+const value: components.Pet[] = [];
 ```
 
 ### `components.ErrorT`
 
 ```typescript
 const value: components.ErrorT = {
-  code: 715190,
+  code: 476671,
   message: "<value>",
 };
 ```
