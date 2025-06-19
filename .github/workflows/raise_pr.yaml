@@ -65,7 +65,7 @@ jobs:
       - name: Test Binary Execution
         run: |
           echo "Testing if binary can execute..."
-          if bin/speakeasy --version; then
+          if ${{ github.workspace }}/bin/speakeasy --version; then
             echo "✅ Binary executes successfully"
           else
             echo "❌ Binary execution failed"
