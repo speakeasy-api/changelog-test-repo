@@ -13,6 +13,9 @@ on:
         type: boolean
         default: true
 
+env:
+  SPEAKEASY_CLI_LOCATION: /home/runner/work/changelog-test-repo/changelog-test-repo/bin/speakeasy
+  SPEAKEASY_CHANGELOG_DIR: /home/runner/work/changelog-test-repo/changelog-test-repo/changelog-dir
 
 jobs:
   generate:
@@ -35,12 +38,13 @@ jobs:
           echo "Downloading speakeasy binary to: $(pwd)/bin/speakeasy"
           curl -L -o bin/speakeasy https://github.com/speakeasy-api/changelog-test-repo/releases/download/v0.0.3/speakeasy
           chmod +x bin/speakeasy
+          echo "github workspace - ${{ github.workspace }}"
           echo "current working directory - $(pwd)"
-          echo "current working directory - $(pwd)/bin/speakeasy"
-          echo "current working directory - $(pwd)bin/speakeasy"
           echo "Full binary path: $(realpath bin/speakeasy)"
           echo "Files in bin directory ->"
           ls -la bin/
+          echo "Files in pwd directory ->"
+          ls -la .
           echo "=== End of bin directory contents ==="
           echo "SPEAKEASY_CLI_LOCATION=${{ github.workspace }}/bin/speakeasy" >> $GITHUB_ENV
           echo "SPEAKEASY_CHANGELOG_DIR=${{ github.workspace }}/changelog-dir" >> $GITHUB_ENV
@@ -48,6 +52,8 @@ jobs:
 
       - name: Debug Environment Variables
         run: |
+          echo "SPEAKEASY_CLI_LOCATION: ${{ env.SPEAKEASY_CLI_LOCATION }}"
+          echo "SPEAKEASY_CHANGELOG_DIR: ${{SPEAKEASY_CHANGELOG_DIR}}"
           echo "SPEAKEASY_CLI_LOCATION: $(SPEAKEASY_CLI_LOCATION)"
           echo "SPEAKEASY_CHANGELOG_DIR: $(SPEAKEASY_CHANGELOG_DIR)"
 
