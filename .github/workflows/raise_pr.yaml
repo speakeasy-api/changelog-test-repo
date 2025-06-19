@@ -72,8 +72,7 @@ jobs:
             -e SPEAKEASY_CLI_LOCATION="${{ github.workspace }}/bin/speakeasy" \
             -e SPEAKEASY_CHANGELOG_DIR="${{ github.workspace }}/changelog-dir" \
             -e GITHUB_ACCESS_TOKEN="${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}" \
-            -e INPUT_GITHUB_ACCESS_TOKEN="${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}
-            " \
+            -e INPUT_GITHUB_ACCESS_TOKEN="${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}" \
             -e SPEAKEASY_API_KEY="${{ secrets.SPEAKEASY_API_KEY }}" \
             -e GITHUB_SERVER_URL=https://github.com \
             -e GITHUB_REPOSITORY="${{ github.repository }}" \
@@ -81,7 +80,7 @@ jobs:
             -e GITHUB_REF=refs/heads/main \
             -e GITHUB_OUTPUT=./output.txt \
             -e GITHUB_WORKFLOW=test \
-            -e GITHUB_WORKSPACE=${{ github.workspace }} \
+            -e GITHUB_WORKSPACE="${{ github.workspace }}" \
             -e SPEAKEASY_ENVIRONMENT=local \
             -e MODE=pr \
             -e FORCE=true \
