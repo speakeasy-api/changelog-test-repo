@@ -53,9 +53,9 @@ jobs:
       - name: Debug Environment Variables
         run: |
           echo "SPEAKEASY_CLI_LOCATION: ${{ env.SPEAKEASY_CLI_LOCATION }}"
-          echo "SPEAKEASY_CHANGELOG_DIR: ${{SPEAKEASY_CHANGELOG_DIR}}"
-          echo "SPEAKEASY_CLI_LOCATION: $(SPEAKEASY_CLI_LOCATION)"
-          echo "SPEAKEASY_CHANGELOG_DIR: $(SPEAKEASY_CHANGELOG_DIR)"
+          echo "SPEAKEASY_CHANGELOG_DIR: ${{env.SPEAKEASY_CHANGELOG_DIR}}"
+          echo "SPEAKEASY_CLI_LOCATION: $(env.SPEAKEASY_CLI_LOCATION)"
+          echo "SPEAKEASY_CHANGELOG_DIR: $(env.SPEAKEASY_CHANGELOG_DIR)"
 
       - name: Generate SDK
         id: generate
