@@ -39,7 +39,7 @@ jobs:
           mkdir -p bin
           echo "current working directory - $(pwd)"
           echo "Downloading speakeasy binary to: $(pwd)/bin/speakeasy"
-          curl -L -o bin/speakeasy https://github.com/speakeasy-api/changelog-test-repo/releases/download/v0.0.4/speakeasy
+          curl -L -o bin/speakeasy https://github.com/speakeasy-api/changelog-test-repo/releases/download/v0.0.5/speakeasy
           chmod +x bin/speakeasy
           echo "github workspace - ${{ github.workspace }}"
           echo "current working directory - $(pwd)"
