@@ -107,8 +107,8 @@ jobs:
             -e GITHUB_WORKFLOW=test \
             -e GITHUB_WORKSPACE="${{ github.workspace }}" \
             -e SPEAKEASY_ENVIRONMENT=local \
-            -e MODE=pr \
-            -e FORCE=true \
+            -e INPUT_MODE=pr \
+            -e INPUT_FORCE=true \
             -e TARGET=overlay-example \
             -e GITHUB_RUN_ID="${{ github.run_id }}" \
             -e GITHUB_RUN_ATTEMPT="${{ github.run_attempt }}" \
