@@ -18,6 +18,7 @@ env:
   SPEAKEASY_CHANGELOG_DIR: /home/runner/work/changelog-test-repo/changelog-test-repo/changelog-dir
   SPEAKEASY_ENVIRONMENT: local
   INPUT_MODE: pr
+  INPUT_FORCE: true
 
 jobs:
   generate:
