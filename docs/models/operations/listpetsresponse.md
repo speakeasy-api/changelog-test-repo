@@ -5,17 +5,7 @@
 ```typescript
 import { ListPetsResponse } from "openapi/models/operations";
 
-let value: ListPetsResponse = {
-  headers: {
-    "key": [
-      "<value>",
-    ],
-  },
-  result: {
-    code: 544883,
-    message: "<value>",
-  },
-};
+let value: ListPetsResponse = {};
 ```
 
 ## Fields
