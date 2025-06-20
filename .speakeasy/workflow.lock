@@ -1,9 +1,9 @@
-speakeasyVersion: 1.488.0
+speakeasyVersion: 0.0.1
 sources:
     openapi:
         sourceNamespace: openapi
-        sourceRevisionDigest: sha256:f13cd34a75f36cfb40d6cc762537046dfc97bfc2becdd93c57de8ce4fe43a34a
-        sourceBlobDigest: sha256:67faccc65f784b651000acb2e6a666ee5d46abe0405b57bbf47e05e4265af9ba
+        sourceRevisionDigest: sha256:34e15288f4c4e027e788e46d671fa435761b02fc66ce5d7c1349e68c26ef1f7f
+        sourceBlobDigest: sha256:5b6536bcb03d25863717efc0ddd9a4dbac556a154104d2ea5c6e0df3994c054a
         tags:
             - latest
             - 1.0.0
@@ -11,8 +11,10 @@ targets:
     overlay-example:
         source: openapi
         sourceNamespace: openapi
-        sourceRevisionDigest: sha256:f13cd34a75f36cfb40d6cc762537046dfc97bfc2becdd93c57de8ce4fe43a34a
-        sourceBlobDigest: sha256:67faccc65f784b651000acb2e6a666ee5d46abe0405b57bbf47e05e4265af9ba
+        sourceRevisionDigest: sha256:34e15288f4c4e027e788e46d671fa435761b02fc66ce5d7c1349e68c26ef1f7f
+        sourceBlobDigest: sha256:5b6536bcb03d25863717efc0ddd9a4dbac556a154104d2ea5c6e0df3994c054a
+        codeSamplesNamespace: openapi-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:ae3127b919e1be942435cf566b4c198c638ef0e8ee498a824018177704fec229
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -24,8 +26,14 @@ workflow:
                 - location: overlay.yaml
             output: combined-spec.yaml
             registry:
-                location: registry.speakeasyapi.dev/ash-testing/ash-testing/openapi
+                location: registry.speakeasyapi.dev/speakeasy-self/speakeasy-self/openapi
     targets:
         overlay-example:
             target: typescript
             source: openapi
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/speakeasy-self/speakeasy-self/openapi-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false
