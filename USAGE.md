@@ -7,7 +7,6 @@ const sdk = new SDK();
 async function run() {
   const result = await sdk.pets.listPets({});
 
-  // Handle the result
   console.log(result);
 }
 
