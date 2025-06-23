@@ -9,7 +9,7 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import * as components from "../components/index.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
-export type ListPetsRequest = {
+export type RequestListPetsRequest = {
   /**
    * How many items to return at one time (max 100)
    */
@@ -24,8 +24,8 @@ export type ListPetsResponse = {
 };
 
 /** @internal */
-export const ListPetsRequest$inboundSchema: z.ZodType<
-  ListPetsRequest,
+export const RequestListPetsRequest$inboundSchema: z.ZodType<
+  RequestListPetsRequest,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -33,15 +33,15 @@ export const ListPetsRequest$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ListPetsRequest$Outbound = {
+export type RequestListPetsRequest$Outbound = {
   limit?: number | undefined;
 };
 
 /** @internal */
-export const ListPetsRequest$outboundSchema: z.ZodType<
-  ListPetsRequest$Outbound,
+export const RequestListPetsRequest$outboundSchema: z.ZodType<
+  RequestListPetsRequest$Outbound,
   z.ZodTypeDef,
-  ListPetsRequest
+  RequestListPetsRequest
 > = z.object({
   limit: z.number().int().optional(),
 });
@@ -50,28 +50,30 @@ export const ListPetsRequest$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ListPetsRequest$ {
-  /** @deprecated use `ListPetsRequest$inboundSchema` instead. */
-  export const inboundSchema = ListPetsRequest$inboundSchema;
-  /** @deprecated use `ListPetsRequest$outboundSchema` instead. */
-  export const outboundSchema = ListPetsRequest$outboundSchema;
-  /** @deprecated use `ListPetsRequest$Outbound` instead. */
-  export type Outbound = ListPetsRequest$Outbound;
+export namespace RequestListPetsRequest$ {
+  /** @deprecated use `RequestListPetsRequest$inboundSchema` instead. */
+  export const inboundSchema = RequestListPetsRequest$inboundSchema;
+  /** @deprecated use `RequestListPetsRequest$outboundSchema` instead. */
+  export const outboundSchema = RequestListPetsRequest$outboundSchema;
+  /** @deprecated use `RequestListPetsRequest$Outbound` instead. */
+  export type Outbound = RequestListPetsRequest$Outbound;
 }
 
-export function listPetsRequestToJSON(
-  listPetsRequest: ListPetsRequest,
+export function requestListPetsRequestToJSON(
+  requestListPetsRequest: RequestListPetsRequest,
 ): string {
-  return JSON.stringify(ListPetsRequest$outboundSchema.parse(listPetsRequest));
+  return JSON.stringify(
+    RequestListPetsRequest$outboundSchema.parse(requestListPetsRequest),
+  );
 }
 
-export function listPetsRequestFromJSON(
+export function requestListPetsRequestFromJSON(
   jsonString: string,
-): SafeParseResult<ListPetsRequest, SDKValidationError> {
+): SafeParseResult<RequestListPetsRequest, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ListPetsRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListPetsRequest' from JSON`,
+    (x) => RequestListPetsRequest$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'RequestListPetsRequest' from JSON`,
   );
 }
 
