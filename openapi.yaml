@@ -86,6 +86,46 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /count:
+        get:
+            summary: Get count
+            operationId: getCount
+            tags:
+                - stats
+            responses:
+                '200':
+                    description: Returns a count as integer
+                    content:
+                        application/json:
+                            schema:
+                                type: integer
+                                example: 42
+                default:
+                    description: unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+    /random:
+        get:
+            summary: Get random integer
+            operationId: getRandom
+            tags:
+                - stats
+            responses:
+                '200':
+                    description: Returns a random integer
+                    content:
+                        application/json:
+                            schema:
+                                type: integer
+                                example: 7
+                default:
+                    description: unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 components:
     schemas:
         Pet:
