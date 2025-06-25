@@ -1,11 +1,11 @@
-# ListPetsRequest
+# RequestListPetsRequest
 
 ## Example Usage
 
 ```typescript
-import { ListPetsRequest } from "openapi/models/operations";
+import { RequestListPetsRequest } from "openapi/models/operations";
 
-let value: ListPetsRequest = {};
+let value: RequestListPetsRequest = {};
 ```
 
 ## Fields
