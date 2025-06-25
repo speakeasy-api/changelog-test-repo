@@ -14,7 +14,7 @@ export class Pets extends ClientSDK {
    * List all pets
    */
   async listPets(
-    request: operations.ListPetsRequest,
+    request: operations.RequestListPetsRequest,
     options?: RequestOptions,
   ): Promise<operations.ListPetsResponse> {
     return unwrapAsync(petsListPets(

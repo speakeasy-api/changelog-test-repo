@@ -13,3 +13,9 @@ targets:
     overlay-example:
         target: typescript
         source: openapi
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/speakeasy-self/speakeasy-self/openapi-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false
