@@ -52,28 +52,111 @@ The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https
 ### NPM
 
 ```bash
-npm add <UNSET>
+npm add https://github.com/speakeasy-api/changelog-test-repo
 ```
 
 ### PNPM
 
 ```bash
-pnpm add <UNSET>
+pnpm add https://github.com/speakeasy-api/changelog-test-repo
 ```
 
 ### Bun
 
 ```bash
-bun add <UNSET>
+bun add https://github.com/speakeasy-api/changelog-test-repo
 ```
 
 ### Yarn
 
 ```bash
-yarn add <UNSET> zod
+yarn add https://github.com/speakeasy-api/changelog-test-repo zod
 
 # Note that Yarn does not install peer dependencies automatically. You will need
 # to install zod as shown above.
+```
+
+
+
+### Model Context Protocol (MCP) Server
+
+This SDK is also an installable MCP server where the various SDK methods are
+exposed as tools that can be invoked by AI applications.
+
+> Node.js v20 or greater is required to run the MCP server from npm.
+
+<details>
+<summary>Claude installation steps</summary>
+
+Add the following server definition to your `claude_desktop_config.json` file:
+
+```json
+{
+  "mcpServers": {
+    "SDK": {
+      "command": "npx",
+      "args": [
+        "-y", "--package", "openapi",
+        "--",
+        "mcp", "start"
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Cursor installation steps</summary>
+
+Create a `.cursor/mcp.json` file in your project root with the following content:
+
+```json
+{
+  "mcpServers": {
+    "SDK": {
+      "command": "npx",
+      "args": [
+        "-y", "--package", "openapi",
+        "--",
+        "mcp", "start"
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+You can also run MCP servers as a standalone binary with no additional dependencies. You must pull these binaries from available Github releases:
+
+```bash
+curl -L -o mcp-server \
+    https://github.com/{org}/{repo}/releases/download/{tag}/mcp-server-bun-darwin-arm64 && \
+chmod +x mcp-server
+```
+
+If the repo is a private repo you must add your Github PAT to download a release `-H "Authorization: Bearer {GITHUB_PAT}"`.
+
+
+```json
+{
+  "mcpServers": {
+    "Todos": {
+      "command": "./DOWNLOAD/PATH/mcp-server",
+      "args": [
+        "start"
+      ]
+    }
+  }
+}
+```
+
+For a full list of server arguments, run:
+
+```sh
+npx -y --package openapi -- mcp start --help
 ```
 <!-- End SDK Installation [installation] -->
 
@@ -96,7 +179,6 @@ const sdk = new SDK();
 async function run() {
   const result = await sdk.pets.listPets({});
 
-  // Handle the result
   console.log(result);
 }
 
@@ -116,6 +198,11 @@ run();
 * [listPets](docs/sdks/pets/README.md#listpets) - List all pets
 * [createPets](docs/sdks/pets/README.md#createpets) - Create a pet
 
+
+### [stats](docs/sdks/stats/README.md)
+
+* [getCount](docs/sdks/stats/README.md#getcount) - Get count
+* [getRandom](docs/sdks/stats/README.md#getrandom) - Get random integer
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -137,6 +224,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 - [`petsCreatePets`](docs/sdks/pets/README.md#createpets) - Create a pet
 - [`petsListPets`](docs/sdks/pets/README.md#listpets) - List all pets
+- [`statsGetCount`](docs/sdks/stats/README.md#getcount) - Get count
+- [`statsGetRandom`](docs/sdks/stats/README.md#getrandom) - Get random integer
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -166,7 +255,6 @@ async function run() {
     },
   });
 
-  // Handle the result
   console.log(result);
 }
 
@@ -194,7 +282,6 @@ const sdk = new SDK({
 async function run() {
   const result = await sdk.pets.listPets({});
 
-  // Handle the result
   console.log(result);
 }
 
@@ -206,47 +293,34 @@ run();
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-If the request fails due to, for example 4XX or 5XX status codes, it will throw a `APIError`.
+[`SDKError`](./src/models/errors/sdkerror.ts) is the base class for all HTTP error responses. It has the following properties:
 
-| Error Type      | Status Code | Content Type |
-| --------------- | ----------- | ------------ |
-| errors.APIError | 4XX, 5XX    | \*/\*        |
+| Property            | Type       | Description                                            |
+| ------------------- | ---------- | ------------------------------------------------------ |
+| `error.message`     | `string`   | Error message                                          |
+| `error.statusCode`  | `number`   | HTTP response status code eg `404`                     |
+| `error.headers`     | `Headers`  | HTTP response headers                                  |
+| `error.body`        | `string`   | HTTP body. Can be empty string if no body is returned. |
+| `error.rawResponse` | `Response` | Raw HTTP response                                      |
 
+### Example
 ```typescript
 import { SDK } from "openapi";
-import { SDKValidationError } from "openapi/models/errors";
+import * as errors from "openapi/models/errors";
 
 const sdk = new SDK();
 
 async function run() {
-  let result;
   try {
-    result = await sdk.pets.listPets({});
+    const result = await sdk.pets.listPets({});
 
-    // Handle the result
     console.log(result);
-  } catch (err) {
-    switch (true) {
-      // The server response does not match the expected SDK schema
-      case (err instanceof SDKValidationError):
-        {
-          // Pretty-print will provide a human-readable multi-line error message
-          console.error(err.pretty());
-          // Raw value may also be inspected
-          console.error(err.rawValue);
-          return;
-        }
-        apierror.js;
-      // Server returned an error status code or an unknown content type
-      case (err instanceof APIError): {
-        console.error(err.statusCode);
-        console.error(err.rawResponse.body);
-        return;
-      }
-      default: {
-        // Other errors such as network errors, see HTTPClientErrors for more details
-        throw err;
-      }
+  } catch (error) {
+    if (error instanceof errors.SDKError) {
+      console.log(error.message);
+      console.log(error.statusCode);
+      console.log(error.body);
+      console.log(error.headers);
     }
   }
 }
@@ -255,17 +329,26 @@ run();
 
 ```
 
-Validation errors can also occur when either method arguments or data returned from the server do not match the expected format. The `SDKValidationError` that is thrown as a result will capture the raw value that failed validation in an attribute called `rawValue`. Additionally, a `pretty()` method is available on this error that can be used to log a nicely formatted multi-line string since validation errors can list many issues and the plain error string may be difficult read when debugging.
+### Error Classes
+**Primary error:**
+* [`SDKError`](./src/models/errors/sdkerror.ts): The base class for HTTP error responses.
 
-In some rare cases, the SDK can fail to get a response from the server or even make the request due to unexpected circumstances such as network conditions. These types of errors are captured in the `models/errors/httpclienterrors.ts` module:
+<details><summary>Less common errors (6)</summary>
 
-| HTTP Client Error                                    | Description                                          |
-| ---------------------------------------------------- | ---------------------------------------------------- |
-| RequestAbortedError                                  | HTTP request was aborted by the client               |
-| RequestTimeoutError                                  | HTTP request timed out due to an AbortSignal signal  |
-| ConnectionError                                      | HTTP client was unable to make a request to a server |
-| InvalidRequestError                                  | Any input used to create a request is invalid        |
-| UnexpectedClientError                                | Unrecognised or unexpected error                     |
+<br />
+
+**Network errors:**
+* [`ConnectionError`](./src/models/errors/httpclienterrors.ts): HTTP client was unable to make a request to a server.
+* [`RequestTimeoutError`](./src/models/errors/httpclienterrors.ts): HTTP request timed out due to an AbortSignal signal.
+* [`RequestAbortedError`](./src/models/errors/httpclienterrors.ts): HTTP request was aborted by the client.
+* [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
+* [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
+
+
+**Inherit from [`SDKError`](./src/models/errors/sdkerror.ts)**:
+* [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
+
+</details>
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -275,11 +358,11 @@ In some rare cases, the SDK can fail to get a response from the server or even m
 
 You can override the default server globally by passing a server index to the `serverIdx: number` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the indexes associated with the available servers:
 
-| #   | Server                            |
-| --- | --------------------------------- |
-| 0   | `http://petstore.swagger.io/v1`   |
-| 1   | `https://staging.petstore.com/v1` |
-| 2   | `https://api.petstore.com/v1`     |
+| #   | Server                            | Description       |
+| --- | --------------------------------- | ----------------- |
+| 0   | `http://petstore.swagger.io/v1`   |                   |
+| 1   | `https://staging.petstore.com/v1` | Staging server    |
+| 2   | `https://api.petstore.com/v1`     | Production server |
 
 #### Example
 
@@ -293,7 +376,6 @@ const sdk = new SDK({
 async function run() {
   const result = await sdk.pets.listPets({});
 
-  // Handle the result
   console.log(result);
 }
 
@@ -308,13 +390,12 @@ The default server can also be overridden globally by passing a URL to the `serv
 import { SDK } from "openapi";
 
 const sdk = new SDK({
-  serverURL: "http://petstore.swagger.io/v1",
+  serverURL: "https://api.petstore.com/v1",
 });
 
 async function run() {
   const result = await sdk.pets.listPets({});
 
-  // Handle the result
   console.log(result);
 }
 

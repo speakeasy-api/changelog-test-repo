@@ -4,10 +4,16 @@
 
 import { ClientSDK } from "../lib/sdks.js";
 import { Pets } from "./pets.js";
+import { Stats } from "./stats.js";
 
 export class SDK extends ClientSDK {
   private _pets?: Pets;
   get pets(): Pets {
     return (this._pets ??= new Pets(this._options));
+  }
+
+  private _stats?: Stats;
+  get stats(): Stats {
+    return (this._stats ??= new Stats(this._options));
   }
 }

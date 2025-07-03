@@ -6,7 +6,7 @@
 import { ErrorT } from "openapi/models/components";
 
 let value: ErrorT = {
-  code: 645894,
+  code: 476671,
   message: "<value>",
 };
 ```
