@@ -6,7 +6,7 @@
 import { Pet } from "openapi/models/components";
 
 let value: Pet = {
-  id: 423655,
+  id: 58705,
   name: "<value>",
 };
 ```
