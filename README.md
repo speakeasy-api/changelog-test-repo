@@ -12,6 +12,7 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 
 <br /><br />
 > [!IMPORTANT]
+> 
 > This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/ash-testing/ash-testing). Delete this section before > publishing to a package manager.
 
 <!-- Start Summary [summary] -->
@@ -23,20 +24,32 @@ Swagger Petstore: The Petstore API allows users to manage their pets efficiently
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [openapi](#openapi)
-  * [SDK Installation](#sdk-installation)
-  * [Requirements](#requirements)
-  * [SDK Example Usage](#sdk-example-usage)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Standalone functions](#standalone-functions)
-  * [Retries](#retries)
-  * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
-  * [Custom HTTP Client](#custom-http-client)
-  * [Debugging](#debugging)
-* [Development](#development)
-  * [Maturity](#maturity)
-  * [Contributions](#contributions)
+- [openapi](#openapi)
+  - [Summary](#summary)
+  - [Table of Contents](#table-of-contents)
+  - [SDK Installation](#sdk-installation)
+    - [NPM](#npm)
+    - [PNPM](#pnpm)
+    - [Bun](#bun)
+    - [Yarn](#yarn)
+  - [Requirements](#requirements)
+  - [SDK Example Usage](#sdk-example-usage)
+    - [Example](#example)
+  - [Available Resources and Operations](#available-resources-and-operations)
+    - [pets](#pets)
+  - [Standalone functions](#standalone-functions)
+  - [Retries](#retries)
+  - [Error Handling](#error-handling)
+  - [Server Selection](#server-selection)
+    - [Select Server by Index](#select-server-by-index)
+      - [Example](#example-1)
+    - [Override Server URL Per-Client](#override-server-url-per-client)
+  - [Custom HTTP Client](#custom-http-client)
+  - [Debugging](#debugging)
+- [Development](#development)
+  - [Maturity](#maturity)
+  - [Contributions](#contributions)
+    - [SDK Created by Speakeasy](#sdk-created-by-speakeasy)
 
 <!-- End Table of Contents [toc] -->
 
