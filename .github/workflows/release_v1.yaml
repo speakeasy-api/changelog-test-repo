@@ -11,6 +11,12 @@ permissions:
     paths:
       - RELEASES.md
       - "*/RELEASES.md"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Force generation of SDKs
+        type: boolean
+        default: true
 jobs:
   publish:
     uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@v15
