@@ -17,10 +17,42 @@ permissions:
         description: Force generation of SDKs
         type: boolean
         default: true
+
 jobs:
-  publish:
-    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@testing-sdk-action-v1
-    secrets:
-      github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      pypi_token: "jkasndiu1h281237anslkd"
-      speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build and run custom SDK action
+        run: |
+          # Clone the repository with your changes
+          git clone https://github.com/speakeasy-api/sdk-generation-action.git /tmp/sdk-action
+          cd /tmp/sdk-action
+          git checkout testing-sdk-action-v1
+          
+          # Build the Docker image
+          docker build -t custom-sdk-action .
+          
+          # Run the container with your environment variables
+          docker run --rm \
+            -e GITHUB_ACCESS_TOKEN="${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}" \
+            -e INPUT_GITHUB_ACCESS_TOKEN="${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}" \
+            -e SPEAKEASY_API_KEY="${{ secrets.SPEAKEASY_API_KEY }}" \
+            -e GITHUB_SERVER_URL=https://github.com \
+            -e GITHUB_REPOSITORY="${{ github.repository }}" \
+            -e GITHUB_REPOSITORY_OWNER="${{ github.repository_owner }}" \
+            -e GITHUB_REF=refs/heads/main \
+            -e GITHUB_OUTPUT=./output.txt \
+            -e GITHUB_WORKFLOW=test \
+            -e GITHUB_WORKSPACE="${{ github.workspace }}" \
+            -e INPUT_MODE=pr \
+            -e INPUT_FORCE=true \
+            -e INPUT_ACTION=release \
+            -e TARGET=overlay-example \
+            -e GITHUB_RUN_ID="${{ github.run_id }}" \
+            -e GITHUB_RUN_ATTEMPT="${{ github.run_attempt }}" \
+            -v "${{ github.workspace }}:${{ github.workspace }}" \
+            -w "${{ github.workspace }}" \
+            custom-sdk-action
