@@ -1,0 +1,31 @@
+name: Generate SDK for PR
+permissions:
+  checks: write
+  contents: write
+  pull-requests: write
+  statuses: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Force generation of SDKs
+        type: boolean
+        default: true
+
+env:
+  INPUT_MODE: pr
+  INPUT_FORCE: true
+
+
+jobs:
+  generate:
+    uses: speakeasy-api/sdk-generation-action/.github/workflows/workflow-executor.yaml@changelog-additions-removals
+    with:
+      force: true
+      mode: pr
+      speakeasy_version: my-version
+      target: overlay-example
+    secrets:
+      github_access_token: ${{ secrets.SPEAKEASY_WORKFLOW_GITHUB_PAT }}
+      speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
