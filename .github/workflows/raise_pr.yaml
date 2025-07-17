@@ -1,4 +1,4 @@
-name: Generate SDK for PR
+name: Generate SDK for PR V1
 permissions:
   checks: write
   contents: write
