@@ -27,6 +27,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Print GitHub Repository URL
+        run: |
+          echo "GitHub repository URL: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}"
+        env:
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
       - name: Create changelog directory
         run: |
           mkdir -p changelog-dir
